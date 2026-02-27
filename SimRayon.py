@@ -1,4 +1,7 @@
 import numpy as np
+from scipy import integrate
+import matplotlib.pyplot as plt
+
 def odefunction(x, y, profilTemperature):
     ns = 1.000272983820855
     Ts = 288.15
@@ -11,28 +14,31 @@ def odefunction(x, y, profilTemperature):
     dy[1] = (-(ns-1)*(Ts/T**2)*dTdz)*(1/(1+(ns-1)*(Ts/T)))
     return dy
 
-def trajetRayonEuler(t_span, y0, dx, profilTemperature):
-    x0, xf = t_span
+def trajetRayonEuler(intervalle, y0, dx, profilTemperature):
+    x0, xf = intervalle
     z0, i0 = y0
     
     x = [x0]
     Y = [np.array(y0)]
     
     while x[-1] < xf :
-        h = min(dx, xf-x[-1])
+        dx2 = min(dx, xf-x[-1])
         pente = odefunction(x[-1], Y[-1], profilTemperature)
-        xs = x[-1] + h
-        ys = Y[-1] + h * pente
+        xs = x[-1] + dx2
+        ys = Y[-1] + dx2 * pente
         
         x.append(xs)
         Y.append(ys)
     
     return np.array(x), np.array(Y)
     
+def trajetRayonIVP(intervalle, y0, rtol, profilTemperature):
+    sol = integrate.solve_ivp(odefunction, intervalle, y0, args=(profilTemperature, ), rtol=rtol)
+    return [sol.t, sol.y]
 
 def profilTemperatureLin(z):
     h = 0.5
-    Tsol = 30 + 2733.15
+    Tsol = 30 + 273.15
     Th = 15 + 273.15
     
     if z < h:
