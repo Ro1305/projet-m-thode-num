@@ -51,7 +51,7 @@ def trajetRayonIVP(intervalle, y0, rtol, profilTemperature):
 
 #x_ivp, Y_ivp = trajetRayonIVP([0, 1000], [1, np.radians(-0.5)], 10**-10, profilTemperatureLin)
 
-"""for o in np.linspace(-1, 0.1, 20):
+for o in np.linspace(-1, 0.1, 20):
     x_eul, Y_eul = trajetRayonEuler([0, 1000], [1, np.radians(o)], 0.01, profilTemperatureLin)
     z_eul = Y_eul[0,:]
     ss = np.where(z_eul<=0)[0]
@@ -59,11 +59,11 @@ def trajetRayonIVP(intervalle, y0, rtol, profilTemperature):
         indice_sol = ss[0]
         x_positif = x_eul[:indice_sol + 1]
         z_positif = z_eul[:indice_sol + 1]
-        plt.plot(x_positif, z_positif)
+        plt.plot(x_positif, z_positif, color = 'blue')
     else:
-        plt.plot(x_eul, z_eul)
+        plt.plot(x_eul, z_eul, color = 'blue')
 
-plt.show()"""
+#plt.show()
 #z_ivp = Y_ivp[0, :]
 """zf_ivp = Y_ivp[0, -1]
 zf_eul = Y_eul[0, -1]
@@ -94,14 +94,15 @@ statut2 = resultat2[1]
 x_eul, Y_eul = trajetRayonEuler([0, 1000], [z0, np.radians(i01)], 0.1, profilTemperatureLin)
 z_eul = Y_eul[0,:]
 print(i01,", statut:",statut1)
-plt.plot(x_eul, z_eul)
+plt.plot(x_eul, z_eul, color='red')
 
     
 x_eul, Y_eul = trajetRayonEuler([0, 1000], [z0, np.radians(i02)], 0.1, profilTemperatureLin)
 z_eul = Y_eul[0,:]
-plt.plot(x_eul, z_eul)
-plt.plot(x_eul, z_eul)
+plt.plot(x_eul, z_eul, color = 'red')
 print(i02,", statut:",statut2)
 plt.show()
 
+distance_angulaire = abs(i01 - i02)
+print("La distance angulaire entre les deux images vaut:", distance_angulaire)
     
