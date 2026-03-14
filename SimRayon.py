@@ -101,7 +101,7 @@ x_eul, Y_eul = trajetRayonEuler([0, 1000], [z0, np.radians(i02)], 0.1, profilTem
 z_eul = Y_eul[0,:]
 plt.plot(x_eul, z_eul)
 plt.plot(x_eul, z_eul)
-print(i02,", statut",statut2)
+print(i02,", statut:",statut2)
 plt.show()
 
     
