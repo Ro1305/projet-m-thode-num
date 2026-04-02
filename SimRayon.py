@@ -14,18 +14,19 @@ def odefunction(x, y, profilTemperature):
     dy[1] = (-(ns-1)*(Ts/T**2)*dTdz)*(1/(1+(ns-1)*(Ts/T)))
     return dy
 
-def trajetRayonEuler(intervalle, y0, dx, profilTemperature):
+def trajetRayonEuler(intervalle, y0, dx, profilTemperature, sol = False):
     x0, xf = intervalle
     
     x = [x0]
     Y = [np.array(y0)]
-    
+
     while x[-1] < xf :
         dx2 = min(dx, xf-x[-1])
         pente = odefunction(x[-1], Y[-1], profilTemperature)
         xs = x[-1] + dx2
         ys = Y[-1] + dx2 * pente
-        
+        if sol and ys[0] < 0:
+            break
         x.append(xs)
         Y.append(ys)
     return np.array(x), np.array(Y).T
