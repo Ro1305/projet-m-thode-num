@@ -32,7 +32,7 @@ def secante (f, x0, x1, tol):
     if abs(fx1)<tol:
         return [x1, 0]
     if abs(fx1-fx0)<tol:
-        print("Erreur")
+        print("Erreur : La pente est nulle (f(x0) et f(x1) sont trop proches).")
         return[x0, 1]
     
     itérations = 0
@@ -50,5 +50,5 @@ def secante (f, x0, x1, tol):
         itérations+=1
         if itérations > 500:
             print("Erreur : Limite d'itérations atteinte")
-            return [x2, -1]       
+            return [x2, -1]      
     return [x1, 0]
