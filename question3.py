@@ -27,8 +27,31 @@ def recherche_angles(intervalle , z0 , xf , zf):
             resultat= bissection(f_a_resoudre,intervalle_supp[0],intervalle_supp[1],1e-4)
     
     return i02, resultat[0]
-if __name__ == '__main__':    
-    """x= - np.pi
+
+
+def projections_rayons(intervalle , z0 , xf , zf):
+    i02, resultat = recherche_angles(intervalle , z0 , xf , zf)
+    _, Y_i02 = trajetRayonEuler([0, xf], [z0, i02], 1, profilTemperatureLin, sol=True)
+    _, Y_resultat = trajetRayonEuler([0, xf], [z0, resultat], 1, profilTemperatureLin, sol=True)
+    x = zf - xf * np.tan(Y_i02[1][-1])
+    x_mir = zf - xf * np.tan(Y_resultat[1][-1])
+    o = abs(Y_i02[1][-1]-Y_resultat[1][-1])
+    print("La distance maximale vaut", o)
+    plt.plot([0, 0], [x_mir, x], 'ro-')
+    plt.axhline(0, color='black')    
+    plt.title("Projections des rayons sur le plan vertical") 
+    plt.ylabel("hauteur (m)")      
+    plt.show()
+ 
+
+
+z0 = 1
+xf = 1000
+intervalle = [0, xf]
+zf = 1.5
+
+   
+"""x= - np.pi
 
     k= 1
     max =0
@@ -43,7 +66,6 @@ if __name__ == '__main__':
         max+=1
     
     if resultat[1] == 1:
-        # todo reimplementer la meme approche ici pour une déflexion par le haut
         intervalle_supp= [i02-decalage,seuil]
         resultat= bissection(f_a_resoudre,intervalle_supp[0],intervalle_supp[1],1e-4)
     return [i02, resultat[0]]"""
@@ -52,9 +74,6 @@ def q32(intervalle , z0 , xf , zf):
     direct, indirect=recherche_angles(intervalle , z0 , xf , zf)
     x, Y2 = trajetRayonEuler(intervalle, [z0, indirect], 1e-3, profilTemperatureLin)
     ooo = Y2[1]-direct
-    # todo plot les 2 euler au meme point
-    # todo plot ooo (delta i) et abs
-    # todo fixer les noms de variables dégeu
     print(ooo)
     from matplotlib import pyplot as plt
     plt.plot(ooo)
@@ -62,7 +81,7 @@ def q32(intervalle , z0 , xf , zf):
     return np.max(np.abs(ooo))"""
 
     
-
+"""
 z0 = 1
 xf = 1000
 intervalle = [0, xf]
@@ -93,7 +112,7 @@ plt.plot(AAAAAAAAAA,BB)
 u = recherche_angles(intervalle, z0 , xf, zf)
 #plt.axvline(u[0])
 plt.axvline(u[1])
-plt.show()
+plt.show()"""
 """
 i01 = resultat1[0]
 statut1 = resultat1[1]

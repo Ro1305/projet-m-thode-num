@@ -33,8 +33,20 @@ def trajetRayonEuler(intervalle, y0, dx, profilTemperature, sol = False):
 
 def profilTemperatureLin(z):
     h = 0.5
-    Th = 288.15
-    Tsol = 303.15
+    Th = 15+273.15
+    Tsol = 30+273.15
+    if z < h :
+        T = ((Th-Tsol)/h)*z+Tsol
+        dTdz = (Th-Tsol)/h
+    else :
+        T = Th
+        dTdz = 0
+    return T, dTdz
+
+def profilTemperatureLin2(z):
+    h = 0.5
+    Th = 25+273.15
+    Tsol = 50+273.15
     if z < h :
         T = ((Th-Tsol)/h)*z+Tsol
         dTdz = (Th-Tsol)/h
@@ -59,23 +71,23 @@ def trajetRayonIVP(intervalle, y0, rtol, profilTemperature,sol=False):
 if __name__ == '__main__': 
     #Trajet Rayons Lumineux
     for o in np.linspace(-1, 0.1, 70):
-        x_eul, Y_eul = trajetRayonEuler([0, 1000], [1, np.radians(o)], 0.1, profilTemperatureLin)
+        x_eul, Y_eul = trajetRayonEuler([0, 1000], [1, np.radians(o)], 0.1, profilTemperatureLin, sol=True)
         z_eul = Y_eul[0,:]
-        ss = np.where(z_eul<=0)[0]
+        """ss = np.where(z_eul<=0)[0]
         if len(ss)>0:
             indice_sol = ss[0]
             x_positif = x_eul[:indice_sol + 1]
             z_positif = z_eul[:indice_sol + 1]
             plt.plot(x_positif, z_positif, color = 'blue')
         else:
-            plt.plot(x_eul, z_eul, color = 'blue')
+            plt.plot(x_eul, z_eul, color = 'blue')"""
+        plt.plot(x_eul, z_eul)
     plt.title("Trajet Rayons Lumineux")
     plt.xlabel("distance (m)")
     plt.ylabel("hauteur (m)")
     plt.savefig("cool.png")
-    #plt.show()
-
-
+    plt.show()
+    
 #analyse du pas
 """
 import time
