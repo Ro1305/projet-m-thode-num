@@ -23,11 +23,42 @@ def recherche_angles(intervalle , z0 , xf , zf):
     intervalle_inf = [-seuil , i02 -decalage ]
     resultat = bissection(f_a_resoudre, intervalle_inf[0], intervalle_inf[1], 1e-4)
     if resultat[1] == 1:
-            intervalle_supp= [-0.1,seuil]
+            intervalle_supp= [i02+decalage,seuil]
             resultat= bissection(f_a_resoudre,intervalle_supp[0],intervalle_supp[1],1e-4)
     
     return i02, resultat[0]
 
+def recherche_angles2(intervalle , z0 , xf , zf):
+    decalage= 1e-5
+    seuil= np.pi/2 - decalage
+    
+    def ecart_altitude(i0, z0,xf, zf):
+        x, Y = trajetRayonEuler(intervalle, [z0, i0], 1, profilTemperatureLin,sol=True)
+        zf_fin = Y[0, -1]
+        if x[-1] < xf: 
+            return 100
+        return zf_fin- zf
+    def f_a_resoudre(angle):
+        return ecart_altitude(angle, z0,xf, zf)
+    def minimum(intervalle , z0 , xf , zf):
+        angles_recherche = []
+        for i in np.linspace(-np.pi/4,np.pi/4,700):
+            a = f_a_resoudre(i)
+            angles_recherche.append((a, i))
+        meilleur = min(angles_recherche)
+        print(meilleur)
+        return meilleur[1]
+    i_min = minimum(intervalle, z0, xf, zf)
+    intervalle_inf = [i_min+decalage,seuil]
+    intervalle_supp= [-seuil,i_min-decalage]
+    i01 = bissection(f_a_resoudre, intervalle_inf[0], intervalle_inf[1], 1e-4)
+    i02 = bissection(f_a_resoudre,intervalle_supp[0],intervalle_supp[1],1e-4)
+    
+    return i01[0], i02[0]
+z0 = 1
+xf = 1000
+intervalle = [0, xf]
+zf = 1.5
 
 def projections_rayons(intervalle , z0 , xf , zf):
     i02, resultat = recherche_angles(intervalle , z0 , xf , zf)
@@ -43,12 +74,9 @@ def projections_rayons(intervalle , z0 , xf , zf):
     plt.ylabel("hauteur (m)")      
     plt.show()
  
+#projections_rayons(intervalle , z0 , xf , zf)
 
 
-z0 = 1
-xf = 1000
-intervalle = [0, xf]
-zf = 1.5
 
    
 """x= - np.pi
